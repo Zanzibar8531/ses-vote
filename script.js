@@ -18,21 +18,28 @@ const defsBase = [
 ];
 
 let currentCardIndex = 0;
-let modeRandom = "mot";
 
-// --- GESTION DES ONGLETS PRINCIPAUX ---
 function showTab(tabId) {
+    // Cache tous les onglets
     document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.sidebar .nav-btn').forEach(btn => btn.classList.remove('active'));
+    // Désactive tous les boutons du menu
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
     
+    // Affiche l'onglet cliqué
     document.getElementById('tab-' + tabId).classList.add('active');
     
-    // Active le bouton correspondant dans la sidebar
-    const activeBtn = Array.from(document.querySelectorAll('.sidebar .nav-btn')).find(btn => btn.textContent.toLowerCase().includes(tabId));
-    if(activeBtn) activeBtn.classList.add('active');
+    // Active le bouton cliqué (desktop ou mobile)
+    const btns = document.querySelectorAll('.nav-btn');
+    btns.forEach(btn => {
+        if(btn.getAttribute('onclick').includes(tabId)) {
+            btn.classList.add('active');
+        }
+    });
+
+    // Remonte en haut de page (crucial sur mobile)
+    window.scrollTo(0, 0);
 }
 
-// --- GESTION DES SUJETS DANS L'ÉVAL ---
 function showSubject(id) {
     document.querySelectorAll('.subject-content').forEach(s => s.style.display = 'none');
     document.getElementById('subject-' + id).style.display = 'block';
@@ -52,12 +59,11 @@ function toggleCorrige(id) {
     div.style.display = (div.style.display === 'none' || div.style.display === '') ? 'block' : 'none';
 }
 
-// --- GESTION DES FLASHCARDS ---
 function updateCard() {
     const card = defsBase[currentCardIndex];
-    modeRandom = Math.random() > 0.5 ? "mot" : "def";
-    document.getElementById('card-front').textContent = (modeRandom === "mot") ? card.t : card.d;
-    document.getElementById('card-back').innerHTML = `<strong>— RÉPONSE —</strong><div style="padding:10px;">${(modeRandom === "mot") ? card.d : card.t}</div>`;
+    let mode = Math.random() > 0.5 ? "mot" : "def";
+    document.getElementById('card-front').textContent = (mode === "mot") ? card.t : card.d;
+    document.getElementById('card-back').innerHTML = `<strong>— RÉPONSE —</strong><div style="padding:10px;">${(mode === "mot") ? card.d : card.t}</div>`;
     document.getElementById('flashcard').classList.remove('flipped');
     document.getElementById('user-answer').value = "";
 }
@@ -71,7 +77,6 @@ function nextCard() {
     updateCard(); 
 }
 
-// --- INITIALISATION AU CHARGEMENT ---
 window.onload = () => {
     const editableArea = document.getElementById('editable-area');
     const saved = localStorage.getItem('ses_notes');
