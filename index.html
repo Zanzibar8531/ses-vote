@@ -13,11 +13,11 @@
         <nav class="sidebar">
             <div class="logo">🗳️ SES VOTE</div>
             <div class="menu">
-                <button class="nav-btn active" onclick="showTab('home')">🏠 Accueil</button>
-                <button class="nav-btn" onclick="showTab('cours')">📖 Résumé Cours</button>
-                <button class="nav-btn" onclick="showTab('defs')">📑 Vocabulaire</button>
-                <button class="nav-btn" onclick="showTab('flashcards')">🎴 Flashcards</button>
-                <button class="nav-btn" onclick="showTab('eval')">📝 Entraînement Éval</button>
+                <button class="nav-btn active" data-tab="home">🏠 Accueil</button>
+                <button class="nav-btn" data-tab="cours">📖 Résumé Cours</button>
+                <button class="nav-btn" data-tab="defs">📑 Vocabulaire</button>
+                <button class="nav-btn" data-tab="flashcards">🎴 Flashcards</button>
+                <button class="nav-btn" data-tab="eval">📝 Entraînement Éval</button>
             </div>
         </nav>
 
@@ -29,19 +29,19 @@
                     <p>Plateforme collaborative pour toute la classe. Révisez intelligemment !</p>
                 </div>
                 <div class="grid-nav">
-                    <div class="card-nav" onclick="showTab('cours')">
+                    <div class="card-nav" data-tab="cours">
                         <h3>📖 Résumé du Cours</h3>
                         <p>La synthèse complète pour l'éval.</p>
                     </div>
-                    <div class="card-nav" onclick="showTab('defs')">
+                    <div class="card-nav" data-tab="defs">
                         <h3>📑 Vocabulaire</h3>
                         <p>Toutes les définitions du chapitre.</p>
                     </div>
-                    <div class="card-nav" onclick="showTab('flashcards')">
+                    <div class="card-nav" data-tab="flashcards">
                         <h3>🎴 Flashcards</h3>
                         <p>Mémorisation active (Recto/Verso).</p>
                     </div>
-                    <div class="card-nav" onclick="showTab('eval')">
+                    <div class="card-nav" data-tab="eval">
                         <h3>📝 Exercices Éval</h3>
                         <p>Analyse de documents et corrigés.</p>
                     </div>
@@ -49,9 +49,8 @@
             </section>
 
             <section id="tab-cours" class="tab">
-                <button class="back-btn" onclick="showTab('home')">← Retour</button>
                 <div class="paper doc-word">
-                    <h1 style="text-align:center; color:var(--primary); border-bottom: 2px solid var(--primary); padding-bottom:10px;">🗳️ SYNTHÈSE SES : LE VOTE, UN ACTE COLLECTIF ET INDIVIDUALISÉ</h1>
+                    <h1 class="cours-title">🗳️ SYNTHÈSE SES : LE VOTE, UN ACTE COLLECTIF ET INDIVIDUALISÉ</h1>
                     
                     <h3>I. La mesure de la démocratie : de l'inscription au vote</h3>
                     <p>Le processus électoral commence par le <strong>taux d’inscription</strong>, qui mesure la part des citoyens en âge de voter figurant sur les listes. Le jour de l'élection, on observe la <strong>participation électorale</strong> (le fait de se rendre aux urnes). Celle-ci se divise en deux indicateurs clés :</p>
@@ -80,7 +79,7 @@
                         <li><strong>À Droite :</strong> On retrouve traditionnellement des électeurs plus âgés, des travailleurs indépendants ou des personnes à fort patrimoine, attachés à l'ordre et à la liberté économique.</li>
                         <li><strong>À Gauche :</strong> On retrouve souvent des salariés du secteur public ou des personnes attachées à l'égalité sociale et à l'intervention de l'État. Le <strong>clivage gauche-droite</strong> reste le cadre principal pour comprendre ces oppositions de valeurs.</li>
                     </ul>
-                    <p style="font-size: 0.9rem; color: #64748b; border-top: 1px solid #eee; padding-top: 10px;">*<strong>PCS :</strong> Professions et Catégories Socioprofessionnelles (classement des métiers).</p>
+                    <p class="note-bas-page">*<strong>PCS :</strong> Professions et Catégories Socioprofessionnelles (classement des métiers).</p>
 
                     <h3>V. La montée de la volatilité et du vote intermittent</h3>
                     <p>Aujourd'hui, l'électeur est moins fidèle. On parle de <strong>volatilité électorale</strong>, qui prend deux formes :</p>
@@ -130,16 +129,14 @@
             </section>
 
             <section id="tab-defs" class="tab">
-                <button class="back-btn" onclick="showTab('home')">← Retour</button>
-                <div class="header-flex" style="display:flex; justify-content:space-between; align-items:center;">
+                <div class="header-flex">
                     <h2>Dictionnaire du Chapitre</h2>
-                    <button class="btn-reset" onclick="resetDefs()">Réinitialiser</button>
+                    <button class="btn-reset" id="btn-reset-defs">Réinitialiser</button>
                 </div>
                 <div id="editable-area" class="paper doc-word" contenteditable="true"></div>
             </section>
 
             <section id="tab-flashcards" class="tab">
-                <button class="back-btn" onclick="showTab('home')">← Retour</button>
                 <div class="flashcard-container">
                     <div class="flashcard" id="flashcard">
                         <div class="flashcard-inner">
@@ -148,49 +145,47 @@
                         </div>
                     </div>
                 </div>
-                <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+                <div class="flashcard-controls-container">
                     <textarea id="user-answer" placeholder="Écris ta réponse ici avant de vérifier..."></textarea>
                     <div class="flashcard-controls">
-                        <button id="btn-valider-card" onclick="checkFlashcard()">Valider / Réponse</button>
-                        <button onclick="nextCard()" style="background: var(--primary);">Carte Suivante</button>
+                        <button id="btn-valider-card" class="btn-big btn-green">Valider / Réponse</button>
+                        <button id="btn-next-card" class="btn-big btn-primary">Carte Suivante</button>
                     </div>
                 </div>
             </section>
 
             <section id="tab-eval" class="tab">
-                <button class="back-btn" onclick="showTab('home')">← Retour</button>
-                <h2 style="color:var(--primary);">🏋️ Zone d'Entraînement Intensive</h2>
+                <h2 class="eval-title">🏋️ Zone d'Entraînement Intensive</h2>
                 
-                <div style="margin-bottom: 20px;">
-                    <h3 style="font-size: 1rem; color: #64748b; text-transform: uppercase;">1. Questions de cours (Déballage complet)</h3>
-                    <div class="subject-selector" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                        <button class="nav-btn" id="btn-s1" onclick="showSubject('s1')" style="background:#4f46e5; flex:1;">Sujet 1 : L'Abstention</button>
-                        <button class="nav-btn" id="btn-s2" onclick="showSubject('s2')" style="background:#64748b; flex:1;">Sujet 2 : Variables Sociales</button>
-                        <button class="nav-btn" id="btn-s3" onclick="showSubject('s3')" style="background:#64748b; flex:1;">Sujet 3 : Volatilité</button>
-                        <button class="nav-btn" id="btn-s4" onclick="showSubject('s4')" style="background:#64748b; flex:1;">Sujet 4 : Socialisation</button>
+                <div class="section-mb">
+                    <h3 class="section-subtitle">1. Questions de cours (Déballage complet)</h3>
+                    <div class="subject-selector">
+                        <button class="nav-btn btn-s-blue active-subject" data-subject="s1">Sujet 1 : L'Abstention</button>
+                        <button class="nav-btn btn-s-gray" data-subject="s2">Sujet 2 : Variables Sociales</button>
+                        <button class="nav-btn btn-s-gray" data-subject="s3">Sujet 3 : Volatilité</button>
+                        <button class="nav-btn btn-s-gray" data-subject="s4">Sujet 4 : Socialisation</button>
                     </div>
                 </div>
 
-                <div style="margin-bottom: 30px;">
-                    <h3 style="font-size: 1rem; color: #64748b; text-transform: uppercase;">2. Études de documents (Analyse & Chiffres)</h3>
-                    <div class="subject-selector" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                        <button class="nav-btn" id="btn-doc1" onclick="showSubject('doc1')" style="background:#059669; flex:1;">Doc A : Diplôme / Vote</button>
-                        <button class="nav-btn" id="btn-doc2" onclick="showSubject('doc2')" style="background:#059669; flex:1;">Doc B : Vote Intermittent</button>
+                <div class="section-mb">
+                    <h3 class="section-subtitle">2. Études de documents (Analyse & Chiffres)</h3>
+                    <div class="subject-selector">
+                        <button class="nav-btn btn-s-green" data-subject="doc1">Doc A : Diplôme / Vote</button>
+                        <button class="nav-btn btn-s-green" data-subject="doc2">Doc B : Vote Intermittent</button>
                     </div>
                 </div>
 
                 <div id="subject-s1" class="subject-content">
-                    <div class="paper" style="border-top: 5px solid #4f46e5;">
+                    <div class="paper border-blue">
                         <h4>Sujet 1 : Distinguez l'abstention « dans le jeu » de l'abstention « hors-jeu ».</h4>
                         <textarea placeholder="Rédige ici..."></textarea>
-                        <button class="btn-corrige" onclick="toggleCorrige('corr-s1')">🔥 Voir le Corrigé Déballé</button>
-                        <div id="corr-s1" style="display:none;" class="corrige-box">
+                        <button class="btn-corrige" data-corrige="corr-s1">🔥 Voir le Corrigé Déballé</button>
+                        <div id="corr-s1" class="corrige-box hidden">
                             <p>La <strong>participation électorale</strong> se définit par le fait, pour un citoyen inscrit sur les listes, d'aller voter le jour du scrutin. À l'inverse, l'<strong>abstention électorale</strong> désigne le fait de ne pas se rendre aux urnes. Ce phénomène n'est pas homogène et la sociologie distingue deux profils majeurs pour mieux comprendre la crise du lien politique.</p>
                             <p>D'une part, l'<strong>abstention dite « hors-jeu »</strong> renvoie directement à une forme d'<strong>exclusion sociale*</strong>. Elle touche des citoyens dont l'intégration est fragile, que ce soit au niveau de la socialisation primaire (isolement familial) ou de la socialisation secondaire (précarité professionnelle, chômage). Cette mise à l'écart de la société civile entraîne un manque de <strong>compétence politique*</strong> : l'individu ne possède pas le capital culturel ou les outils d'analyse pour décoder l'<strong>offre électorale*</strong>. Par conséquent, ces citoyens se sentent illégitimes, ont le sentiment que "la politique n'est pas pour eux" et finissent par perdre toute confiance dans les institutions. Ici, l'abstention est <strong>subie</strong> : elle est la conséquence d'un retrait social global.</p>
                             <p>D'autre part, l'<strong>abstention « dans le jeu »</strong> est une démarche opposée car elle est politique, consciente et souvent pratiquée par des individus socialement très bien intégrés. Ici, l'individu possède les codes, suit l'actualité et se sent légitime pour juger les candidats, mais il choisit délibérément de ne pas voter. Ce comportement s'inscrit souvent dans le <strong>vote intermittent*</strong> : l'électeur utilise l'abstention comme une "arme" de protestation ou une sanction parce qu'aucun candidat ne le représente. Contrairement au profil précédent, l'abstention n'est pas un manque de compétence, mais une forme de participation négative pour manifester un mécontentement face à une crise de la représentation. Elle n'est pas subie, mais <strong>choisie</strong> et stratégique.</p>
-                            <p>En conclusion, distinguer ces deux formes est crucial : alors que l'abstention "hors-jeu" révèle une faille de l'intégration sociale, l'abstention "dans le jeu" traduit une mutation du comportement électoral vers une citoyenneté plus critique et volatile.</p>
-                            <p style="font-weight:bold; margin-top:15px;">voc :</p>
-                            <ul style="list-style:none; padding-left:0; font-size:0.9rem;">
+                            <p class="voc-title">voc :</p>
+                            <ul class="voc-list">
                                 <li><strong>Exclusion sociale :</strong> Rupture des liens sociaux (famille, travail, amis) qui empêche l'individu de se sentir membre de la communauté politique.</li>
                                 <li><strong>Compétence politique :</strong> Capacité d'un individu à comprendre les enjeux politiques (souvent liée au diplôme).</li>
                                 <li><strong>Offre électorale :</strong> Diversité des candidats et programmes disponibles.</li>
@@ -200,18 +195,18 @@
                     </div>
                 </div>
 
-                <div id="subject-s2" class="subject-content" style="display:none;">
-                    <div class="paper" style="border-top: 5px solid #4f46e5;">
+                <div id="subject-s2" class="subject-content hidden">
+                    <div class="paper border-blue">
                         <h4>Sujet 2 : Montrez que le comportement électoral dépend de l'appartenance sociale (diplôme, PCS, âge).</h4>
                         <textarea placeholder="Rédige ici..."></textarea>
-                        <button class="btn-corrige" onclick="toggleCorrige('corr-s2')">🔥 Voir le Corrigé Déballé</button>
-                        <div id="corr-s2" style="display:none;" class="corrige-box">
+                        <button class="btn-corrige" data-corrige="corr-s2">🔥 Voir le Corrigé Déballé</button>
+                        <div id="corr-s2" class="corrige-box hidden">
                             <p>Le vote est souvent perçu comme un choix individuel et secret. Pourtant, la sociologie montre que c’est un acte collectif fortement influencé par l’<strong>appartenance sociale*</strong>. Le comportement électoral n'est pas le même selon le groupe auquel on appartient, ce qui permet de définir des profils de votants types.</p>
                             <p>Premièrement, le <strong>diplôme</strong> et la <strong>PCS*</strong> (Profession et Catégorie Socioprofessionnelle) jouent un rôle moteur. Les cadres et les professions intellectuelles supérieures, souvent très diplômés, votent davantage que les ouvriers ou les employés. Cela s'explique par un <strong>capital culturel*</strong> plus élevé qui favorise la compétence politique : plus on est diplômé, plus on se sent légitime pour comprendre les enjeux et plus on s'estime capable d'agir sur la société. À l'inverse, les milieux populaires peuvent ressentir un sentiment d'incompétence qui mène à l'abstention.</p>
                             <p>Deuxièmement, l'<strong>age</strong> est une variable lourde. On observe que les jeunes pratiquent plus souvent le <strong>vote intermittent*</strong> ou l'abstention. Cela est dû à un défaut d'intégration (socialisation incomplète, précarité au début de la vie active). À l'inverse, les seniors (60-75 ans) sont les plus grands votants : ils sont stabilisés socialement, possèdent souvent un patrimoine et ont été socialisés à une époque où le vote était perçu comme un "devoir moral" indiscutable.</p>
                             <p>Enfin, d'autres variables comme la religion ou le patrimoine influencent encore le vote. Par exemple, les personnes possédant un fort patrimoine ou les pratiquants réguliers ont statistiquement plus de chances de voter à droite, tandis que les salariés du secteur public ou les populations urbaines diplômées penchent davantage à gauche. Le vote reste donc, malgré les évolutions, un marqueur de la position occupée dans la hiérarchie sociale.</p>
-                            <p style="font-weight:bold; margin-top:15px;">voc :</p>
-                            <ul style="list-style:none; padding-left:0; font-size:0.9rem;">
+                            <p class="voc-title">voc :</p>
+                            <ul class="voc-list">
                                 <li><strong>Appartenance sociale :</strong> Place occupée par un individu dans la société, définie par son métier, son revenu, son âge et son sexe.</li>
                                 <li><strong>PCS :</strong> Classement de la population en groupes présentant une certaine homogénéité sociale (ex: Cadres, Ouvriers).</li>
                                 <li><strong>Capital culturel :</strong> Ensemble des connaissances, diplômes et manières de parler hérités de la famille qui facilitent l'accès à la politique.</li>
@@ -221,17 +216,17 @@
                     </div>
                 </div>
 
-                <div id="subject-s3" class="subject-content" style="display:none;">
-                    <div class="paper" style="border-top: 5px solid #4f46e5;">
+                <div id="subject-s3" class="subject-content hidden">
+                    <div class="paper border-blue">
                         <h4>Sujet 3 : Comment expliquer que les électeurs soient aujourd'hui moins fidèles à un camp politique ?</h4>
                         <textarea placeholder="Rédige ici..."></textarea>
-                        <button class="btn-corrige" onclick="toggleCorrige('corr-s3')">🔥 Voir le Corrigé Déballé</button>
-                        <div id="corr-s3" style="display:none;" class="corrige-box">
+                        <button class="btn-corrige" data-corrige="corr-s3">🔥 Voir le Corrigé Déballé</button>
+                        <div id="corr-s3" class="corrige-box hidden">
                             <p>Historiquement, le vote en France était marqué par une forte stabilité : on parlait de <strong>vote de classe*</strong>. Les ouvriers votaient massivement à gauche et les cadres à droite, souvent par fidélité à une <strong>identification partisane*</strong> transmise par la famille. Aujourd'hui, on observe une montée de la <strong>volatilité électorale*</strong>, ce qui signifie que l'électeur change de comportement entre deux scrutins.</p>
                             <p>Cette volatilité s'explique d'abord par l'affaiblissement des clivages sociaux traditionnels. Le sentiment d'appartenance à une classe s'est réduit, ce qui rend le vote moins automatique. On assiste à l'émergence d'un "électeur rationnel" ou stratège. Au lieu de voter par tradition, l'individu pratique un <strong>vote sur enjeux*</strong> : il compare les programmes et l'<strong>offre électorale*</strong> du moment (chômage, écologie, sécurité) pour décider de son vote au dernier moment.</p>
                             <p>De plus, la volatilité se manifeste par le <strong>vote intermittent*</strong>. Ce n'est plus forcément un changement de camp (passer de gauche à droite), mais un passage fréquent entre le vote et l'abstention. Le citoyen choisit de se déplacer uniquement pour les élections qu'il juge importantes (comme la Présidentielle) et délaisse les autres. Cela montre que le vote est devenu un acte plus individualisé, dépendant de la <strong>conjoncture politique</strong> et de la personnalité des candidats plutôt que d'une étiquette politique fixe.</p>
-                            <p style="font-weight:bold; margin-top:15px;">voc :</p>
-                            <ul style="list-style:none; padding-left:0; font-size:0.9rem;">
+                            <p class="voc-title">voc :</p>
+                            <ul class="voc-list">
                                 <li><strong>Volatilité électorale :</strong> Fait pour un électeur de changer de choix (parti ou abstention) d'une élection à l'autre.</li>
                                 <li><strong>Vote de classe :</strong> Relation forte entre l'appartenance sociale et le choix d'un candidat.</li>
                                 <li><strong>Identification partisane :</strong> Attachement affectif et durable d'un individu à un parti politique.</li>
@@ -241,18 +236,18 @@
                     </div>
                 </div>
 
-                <div id="subject-s4" class="subject-content" style="display:none;">
-                    <div class="paper" style="border-top: 5px solid #4f46e5;">
+                <div id="subject-s4" class="subject-content hidden">
+                    <div class="paper border-blue">
                         <h4>Sujet 4 : Quel est le rôle de la famille dans la construction du vote ?</h4>
                         <textarea placeholder="Rédige ton analyse ici..."></textarea>
-                        <button class="btn-corrige" onclick="toggleCorrige('corr-s4')">🔥 Voir le Corrigé Déballé</button>
-                        <div id="corr-s4" style="display:none;" class="corrige-box">
+                        <button class="btn-corrige" data-corrige="corr-s4">🔥 Voir le Corrigé Déballé</button>
+                        <div id="corr-s4" class="corrige-box hidden">
                             <p>La famille est considérée comme l'instance centrale de la <strong>socialisation politique</strong>. Dès l'enfance, elle transmet de manière diffuse ou explicite des valeurs, des opinions et surtout une <strong>identification partisane*</strong>. Ce mécanisme explique pourquoi le comportement électoral est souvent un héritage.</p>
                             <p>Premièrement, la famille forge l'intérêt pour la politique. Un enfant qui grandit dans un foyer où l'on discute de l'actualité et où le vote est valorisé comme un devoir sacré aura une probabilité beaucoup plus forte de devenir un votant systématique. C'est ici que se joue la transmission de la <strong>compétence politique</strong> : le sentiment d'être légitime à donner son avis sur la marche du pays.</p>
                             <p>Deuxièmement, la famille transmet une orientation idéologique. Les études sociologiques montrent une forte reproduction : un enfant dont les deux parents votent à gauche a environ 7 fois plus de chances de voter à gauche qu'un enfant dont les parents votent à droite. Cette <strong>filiation politique</strong> est d'autant plus forte que les parents sont d'accord entre eux et que le milieu social reste le même à l'âge adulte.</p>
                             <p>Cependant, cet héritage n'est pas un destin figé. La <strong>socialisation secondaire</strong> (rencontre d'un conjoint, influence des collègues de travail, parcours universitaire) peut bousculer ces bases. On parle alors de rupture ou de "choc de socialisation". Par exemple, l'ascension sociale (mobilité ascendante) peut amener un individu à modifier ses choix politiques pour les aligner sur son nouveau groupe d'appartenance. Néanmoins, même en cas de changement de camp, les valeurs profondes inculquées par la famille (rapport à l'autorité, à l'argent, à la religion) continuent souvent d'influencer le vote de manière invisible.</p>
-                            <p style="font-weight:bold; margin-top:15px;">voc :</p>
-                            <ul style="list-style:none; padding-left:0; font-size:0.9rem;">
+                            <p class="voc-title">voc :</p>
+                            <ul class="voc-list">
                                 <li><strong>Socialisation politique :</strong> Processus de transmission des attitudes et comportements politiques tout au long de la vie.</li>
                                 <li><strong>Identification partisane :</strong> Attachement affectif à un parti politique, souvent transmis par les parents.</li>
                                 <li><strong>Socialisation secondaire :</strong> Apprentissages politiques à l'âge adulte (travail, couple, médias).</li>
@@ -262,43 +257,62 @@
                     </div>
                 </div>
 
-                <div id="subject-doc1" class="subject-content" style="display:none;">
-                    <div class="paper" style="border-top: 5px solid #059669;">
-                        <span class="badge" style="background:#d1fae5; color:#059669; padding:5px 10px; border-radius:5px; font-weight:bold;">ANALYSE DE DOC</span>
-                        <h4 style="margin-top:20px;">Question : Montrez que le diplôme est une variable déterminante de la participation.</h4>
-                        <div class="doc-container" style="background:#f8fafc; padding:15px; border:2px solid #e2e8f0; border-radius:12px; margin: 15px 0;">
-                            <p style="font-weight:bold; margin-bottom:10px; color:#0f172a;">📊 Doc : Participation selon le diplôme (Insee, 2022)</p>
-                            <table class="ses-table" style="width:100%; background:white;">
-                                <thead><tr style="background:#f1f5f9;"><th>Diplôme</th><th>Vote systématique</th><th>Vote intermittent</th><th>Abstention systématique</th></tr></thead>
+                <div id="subject-doc1" class="subject-content hidden">
+                    <div class="paper border-green">
+                        <span class="badge-green">MÉTHODE AEI</span>
+                        <h4 class="mt-20">Question : Analysez l'impact du diplôme sur la participation électorale.</h4>
+                        <div class="doc-container">
+                            <p class="doc-title">📊 Doc 1 : Participation selon le diplôme (INSEE)</p>
+                            <table class="ses-table">
+                                <thead><tr><th>Diplôme</th><th>Vote systématique</th><th>Vote intermittent</th><th>Abstention</th></tr></thead>
                                 <tbody>
-                                    <tr><td><strong>Sans diplôme</strong></td><td>52 %</td><td>31 %</td><td>17 %</td></tr>
-                                    <tr><td><strong>Baccalauréat</strong></td><td>74 %</td><td>21 %</td><td>5 %</td></tr>
-                                    <tr><td><strong>Bac +3 ou plus</strong></td><td>85 %</td><td>12 %</td><td>3 %</td></tr>
+                                    <tr><td>Sans diplôme</td><td>52 %</td><td>31 %</td><td>17 %</td></tr>
+                                    <tr><td>Baccalauréat</td><td>74 %</td><td>21 %</td><td>5 %</td></tr>
+                                    <tr><td>Bac +3 ou plus</td><td>85 %</td><td>12 %</td><td>3 %</td></tr>
                                 </tbody>
                             </table>
                         </div>
-                        <textarea placeholder="Analyse les chiffres ici..."></textarea>
-                        <button class="btn-corrige" onclick="toggleCorrige('corr-doc1')">🔥 Voir le Corrigé Déballé</button>
-                        <div id="corr-doc1" style="display:none;" class="corrige-box">
-                            <p>Le document confirme que la <strong>participation électorale</strong> est liée au diplôme. Plus le titre scolaire est élevé, plus le vote devient systématique. C'est un indicateur du <strong>capital culturel</strong> : il donne la <strong>compétence politique*</strong> pour décoder l'<strong>offre électorale*</strong>. Les citoyens sans diplôme peuvent ressentir un sentiment d'incompétence qui les pousse vers l'abstention.</p>
-                            <p><strong>Chiffres :</strong> Les Bac +3 votent systématiquement à 85 %, contre 52 % pour les non-diplômés (écart de 33 points). L'abstention systématique est 6 fois plus élevée chez les sans-diplômes (17 %) que chez les Bac+3 (3 %).</p>
+                        <button class="btn-corrige" data-corrige="corr-doc1">🔥 Voir l'analyse AEI</button>
+                        <div id="corr-doc1" class="hidden">
+                            <div class="ae-box">
+                                <div class="aei-step"><span class="aei-badge a">A</span> <strong>Affirmer :</strong> Le niveau de diplôme est une variable lourde qui commande l'intensité de la participation électorale : plus on est diplômé, plus on vote de façon constante.</div>
+                                <div class="aei-step"><span class="aei-badge e">E</span> <strong>Expliquer :</strong> Cela s'explique par le fait que le diplôme procure une <strong>compétence politique subjective</strong>. Les individus très diplômés se sentent capables d'analyser les programmes et perçoivent le vote comme un investissement efficace. Au contraire, le manque de diplôme engendre un sentiment d'incompétence qui mène à l'abstention "hors-jeu".</div>
+                                <div class="aei-step"><span class="aei-badge i">I</span> <strong>Illustrer :</strong> Selon l'INSEE, il existe un écart de <strong>33 points</strong> entre les plus diplômés (85% de vote systématique) et les non-diplômés (52%). L'abstention systématique est <strong>6 fois plus fréquente</strong> chez les sans-diplômes (17%) que chez les Bac+3 (3%).</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="subject-doc2" class="subject-content" style="display:none;">
-                    <div class="paper" style="border-top: 5px solid #059669;">
-                        <span class="badge" style="background:#d1fae5; color:#059669; padding:5px 10px; border-radius:5px; font-weight:bold;">ANALYSE DE DOC</span>
-                        <h4 style="margin-top:20px;">Question : Expliquez pourquoi le "vote intermittent" touche davantage les milieux moins diplômés.</h4>
-                        <div class="doc-container" style="background:#f8fafc; padding:15px; border:2px solid #e2e8f0; border-radius:12px; margin: 15px 0;">
-                            <p style="font-weight:bold; margin-bottom:10px;">📊 Données (Vote Intermittent) :</p>
-                            <ul><li>Sans diplôme : 31 % de vote intermittent</li><li>Bac +3 ou plus : 12 % de vote intermittent</li></ul>
+                <div id="subject-doc2" class="subject-content hidden">
+                    <div class="paper border-green">
+                        <span class="badge-green">MÉTHODE AEI</span>
+                        <h4 class="mt-20">Question : Montrez que le vote intermittent est devenu une modalité centrale de l'expression politique, surtout chez les jeunes.</h4>
+                        <div class="doc-container">
+                            <p class="doc-title">📊 Doc 2 : Participation électorale par tranche d'âge (en %)</p>
+                            <table class="ses-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tranche d'âge</th>
+                                        <th>Vote systématique</th>
+                                        <th>Vote intermittent</th>
+                                        <th>Abstention constante</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>18-24 ans</td><td>18</td><td><strong>65</strong></td><td>17</td></tr>
+                                    <tr><td>25-39 ans</td><td>24</td><td><strong>58</strong></td><td>18</td></tr>
+                                    <tr><td>65-74 ans</td><td>62</td><td>31</td><td>7</td></tr>
+                                    <tr><td>Ensemble</td><td>35</td><td>47</td><td>18</td></tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <textarea placeholder="Pourquoi certains votent-ils seulement 'parfois' ?"></textarea>
-                        <button class="btn-corrige" onclick="toggleCorrige('corr-doc2')">🔥 Voir le Corrigé Déballé</button>
-                        <div id="corr-doc2" style="display:none;" class="corrige-box">
-                            <p>Le <strong>vote intermittent*</strong> est plus répandu chez les moins diplômés. Pour eux, le vote dépend des <strong>variables contextuelles</strong>. Sans <strong>identification partisane*</strong> forte, ils ne votent que si l'élection semble importante (ex: Présidentielle). Les diplômés, eux, voient le vote comme un devoir régulier.</p>
-                            <p><strong>Chiffres :</strong> 31 % des non-diplômés pratiquent le vote intermittent, soit 2,6 fois plus que les diplômés (12 %).</p>
+                        <button class="btn-corrige" data-corrige="corr-doc2">🔥 Voir l'analyse AEI</button>
+                        <div id="corr-doc2" class="hidden">
+                            <div class="ae-box">
+                                <div class="aei-step"><span class="aei-badge a">A</span> <strong>Affirmer :</strong> Le vote intermittent est devenu le comportement électoral majoritaire en France, supplantant le vote systématique, particulièrement chez les jeunes générations.</div>
+                                <div class="aei-step"><span class="aei-badge e">E</span> <strong>Expliquer :</strong> Ce phénomène traduit une mutation du rapport au politique : on passe d'un vote "devoir" (automatique) à un vote "droit" (stratégique). Les électeurs, plus volatiles, choisissent de se mobiliser uniquement selon l'enjeu du scrutin (ex: la Présidentielle) ou la qualité de l'offre électorale. C'est l'émergence de l'<strong>électeur affranchi</strong>.</div>
+                                <div class="aei-step"><span class="aei-badge i">I</span> <strong>Illustrer :</strong> Pour l'ensemble de la population, le vote intermittent concerne <strong>47% des inscrits</strong>. Chez les 18-24 ans, cette tendance est massive : <strong>65% d'entre eux</strong> pratiquent le vote intermittent, soit 3,6 fois plus que le vote systématique (18%) pour cette même tranche d'âge.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
