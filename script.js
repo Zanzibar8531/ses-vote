@@ -19,44 +19,71 @@ const defsBase = [
 
 let currentCardIndex = 0;
 
-function showTab(tabId) {
-    // Cache tous les onglets
-    document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-    // Désactive tous les boutons du menu
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-    
-    // Affiche l'onglet cliqué
-    document.getElementById('tab-' + tabId).classList.add('active');
-    
-    // Active le bouton cliqué (desktop ou mobile)
-    const btns = document.querySelectorAll('.nav-btn');
-    btns.forEach(btn => {
-        if(btn.getAttribute('onclick').includes(tabId)) {
-            btn.classList.add('active');
-        }
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    initSubjects();
+    initCorriges();
+    initFlashcards();
+    initNotes();
+});
 
-    // Remonte en haut de page (crucial sur mobile)
-    window.scrollTo(0, 0);
+function initNavigation() {
+    const navElements = document.querySelectorAll('[data-tab]');
+    navElements.forEach(el => {
+        el.addEventListener('click', (e) => {
+            let target = e.target;
+            while(!target.hasAttribute('data-tab')) { target = target.parentElement; }
+            const tabId = target.getAttribute('data-tab');
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.sidebar .nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            const menuBtn = document.querySelector(`.sidebar .nav-btn[data-tab="${tabId}"]`);
+            if(menuBtn) menuBtn.classList.add('active');
+            window.scrollTo(0, 0);
+        });
+    });
 }
 
-function showSubject(id) {
-    document.querySelectorAll('.subject-content').forEach(s => s.style.display = 'none');
-    document.getElementById('subject-' + id).style.display = 'block';
-    
-    document.querySelectorAll('.subject-selector .nav-btn').forEach(btn => {
-        btn.style.background = '#64748b'; 
+function initSubjects() {
+    const subjectBtns = document.querySelectorAll('[data-subject]');
+    subjectBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const subjectId = e.target.getAttribute('data-subject');
+            document.querySelectorAll('.subject-content').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.subject-selector .nav-btn').forEach(b => {
+                if(!b.classList.contains('btn-s-green')) {
+                    b.classList.remove('btn-s-blue');
+                    b.classList.add('btn-s-gray');
+                }
+            });
+            document.getElementById('subject-' + subjectId).classList.remove('hidden');
+            if(!e.target.classList.contains('btn-s-green')) {
+                e.target.classList.remove('btn-s-gray');
+                e.target.classList.add('btn-s-blue');
+            }
+        });
     });
-    
-    const activeBtn = document.getElementById('btn-' + id);
-    if(activeBtn) {
-        activeBtn.style.background = id.startsWith('doc') ? '#059669' : '#4f46e5';
-    }
 }
 
-function toggleCorrige(id) {
-    const div = document.getElementById(id);
-    div.style.display = (div.style.display === 'none' || div.style.display === '') ? 'block' : 'none';
+function initCorriges() {
+    const corrigeBtns = document.querySelectorAll('[data-corrige]');
+    corrigeBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const corrigeId = e.target.getAttribute('data-corrige');
+            document.getElementById(corrigeId).classList.toggle('hidden');
+        });
+    });
+}
+
+function initFlashcards() {
+    updateCard();
+    document.getElementById('btn-valider-card').addEventListener('click', () => {
+        document.getElementById('flashcard').classList.add('flipped');
+    });
+    document.getElementById('btn-next-card').addEventListener('click', () => {
+        currentCardIndex = Math.floor(Math.random() * defsBase.length);
+        updateCard();
+    });
 }
 
 function updateCard() {
@@ -68,30 +95,13 @@ function updateCard() {
     document.getElementById('user-answer').value = "";
 }
 
-function checkFlashcard() { 
-    document.getElementById('flashcard').classList.add('flipped'); 
-}
-
-function nextCard() { 
-    currentCardIndex = Math.floor(Math.random() * defsBase.length);
-    updateCard(); 
-}
-
-window.onload = () => {
+function initNotes() {
     const editableArea = document.getElementById('editable-area');
     const saved = localStorage.getItem('ses_notes');
-    if (saved) {
-        editableArea.innerHTML = saved;
-    } else {
-        resetDefs();
-    }
-    
-    editableArea.addEventListener('input', () => { 
-        localStorage.setItem('ses_notes', editableArea.innerHTML); 
-    });
-    
-    updateCard();
-};
+    if (saved) { editableArea.innerHTML = saved; } else { resetDefs(); }
+    editableArea.addEventListener('input', () => { localStorage.setItem('ses_notes', editableArea.innerHTML); });
+    document.getElementById('btn-reset-defs').addEventListener('click', resetDefs);
+}
 
 function resetDefs() {
     let content = "<h2 style='color:var(--primary)'>Dictionnaire du Chapitre</h2>";

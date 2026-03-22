@@ -5,6 +5,7 @@
     --text: #1e293b;
     --white: #ffffff;
     --success: #10b981;
+    --warning: #f59e0b;
     --danger: #ef4444;
 }
 
@@ -22,14 +23,13 @@ body {
     color: var(--text); 
 }
 
-/* --- STRUCTURE MOBILE FIRST --- */
+/* --- STRUCTURE --- */
 .app-container { 
     display: flex; 
     flex-direction: column; 
     min-height: 100vh; 
 }
 
-/* Sidebar devient menu du bas sur mobile */
 .sidebar { 
     width: 100%;
     background: #0f172a; 
@@ -41,7 +41,7 @@ body {
     height: 70px;
 }
 
-.sidebar .logo { display: none; } /* On cache le logo en bas */
+.sidebar .logo { display: none; }
 
 .menu {
     display: flex;
@@ -67,42 +67,23 @@ body {
 .main-content { 
     flex: 1; 
     padding: 15px;
-    padding-bottom: 90px; /* Espace pour ne pas cacher le texte derrière le menu */
+    padding-bottom: 90px;
 }
 
-/* --- DESKTOP (Ordinateur) --- */
 @media (min-width: 769px) {
     .app-container { flex-direction: row; }
-    
-    .sidebar { 
-        width: 220px; 
-        height: 100vh; 
-        position: sticky; 
-        top: 0;
-        flex-direction: column;
-        padding: 20px;
-    }
-    
+    .sidebar { width: 220px; height: 100vh; position: sticky; top: 0; flex-direction: column; padding: 20px; }
     .sidebar .logo { display: block; color: #818cf8; font-weight: 800; margin-bottom: 30px; font-size: 1.2rem;}
-    
     .menu { flex-direction: column; gap: 10px; }
-    
-    .nav-btn { 
-        width: 100%; 
-        flex-direction: row; 
-        padding: 12px; 
-        border-radius: 8px;
-        font-size: 1rem;
-    }
-    
+    .nav-btn { width: 100%; flex-direction: row; padding: 12px; border-radius: 8px; font-size: 1rem; }
     .nav-btn.active { background: var(--primary); color: white; border: none; }
-    
     .main-content { padding: 40px; }
 }
 
 /* --- COMPOSANTS --- */
 .tab { display: none; max-width: 850px; margin: 0 auto; }
 .tab.active { display: block; }
+.hidden { display: none !important; }
 
 .paper { 
     background: white; 
@@ -124,11 +105,19 @@ body {
 }
 
 /* Tableaux */
-.doc-container { overflow-x: auto; margin: 15px 0; }
-.ses-table { width: 100%; border-collapse: collapse; min-width: 400px; font-size: 0.85rem; }
+.doc-container { 
+    overflow-x: auto; 
+    margin: 15px 0; 
+    background: #f8fafc; 
+    padding: 15px; 
+    border: 2px solid #e2e8f0; 
+    border-radius: 12px; 
+}
+.ses-table { width: 100%; border-collapse: collapse; min-width: 400px; font-size: 0.85rem; background: white; }
 .ses-table th, .ses-table td { border: 1px solid #e2e8f0; padding: 8px; }
+.ses-table th { background: #f1f5f9; }
 
-/* Flashcards Compactes */
+/* Flashcards */
 .flashcard { width: 100%; max-width: 400px; height: 250px; margin: 0 auto; }
 .flashcard-inner { position: relative; width: 100%; height: 100%; transition: 0.6s; transform-style: preserve-3d; }
 .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
@@ -139,10 +128,57 @@ body {
 .flashcard-front { border: 4px solid var(--primary); background: white; font-weight: 700; font-size: 1.2rem;}
 .flashcard-back { background: var(--primary); color: white; transform: rotateY(180deg); }
 
-/* Boutons */
+/* --- BOUTONS FLASHCARDS PLUS GROS ET COULEUR --- */
+.flashcard-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-big {
+    padding: 18px !important; /* Plus de hauteur */
+    font-size: 1.1rem !important; /* Texte plus grand */
+    width: 100%;
+}
+
+.btn-green {
+    background-color: var(--success) !important;
+    color: white !important;
+}
+
+/* Autres Boutons */
 button { border: none; cursor: pointer; font-weight: 600; border-radius: 10px; }
-.back-btn { background: #64748b; color: white; width: 100%; padding: 10px; margin-bottom: 15px; }
 .btn-corrige { background: var(--success); color: white; width: 100%; padding: 12px; margin-top: 10px; }
 textarea { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #cbd5e1; margin-top: 10px; }
+.btn-primary { background: var(--primary); color: white;}
+
+/* Utilitaires */
+.cours-title { text-align: center; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+.note-bas-page { font-size: 0.9rem; color: #64748b; border-top: 1px solid #eee; padding-top: 10px; }
+.header-flex { display: flex; justify-content: space-between; align-items: center; }
+.flashcard-controls-container { max-width: 600px; margin: 0 auto; text-align: center; }
+.eval-title { color: var(--primary); }
+.section-mb { margin-bottom: 20px; }
+.section-subtitle { font-size: 1rem; color: #64748b; text-transform: uppercase; }
+.subject-selector { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.btn-s-blue { background: #4f46e5; flex: 1; color: white; }
+.btn-s-gray { background: #64748b; flex: 1; color: white; }
+.btn-s-green { background: #059669; flex: 1; color: white; }
+
+.border-blue { border-top: 5px solid #4f46e5; }
+.border-green { border-top: 5px solid #059669; }
 
 .corrige-box { background: #f0fdf4; border-left: 4px solid var(--success); padding: 15px; margin-top: 10px; border-radius: 5px; }
+.voc-title { font-weight: bold; margin-top: 15px; }
+.voc-list { list-style: none; padding-left: 0; font-size: 0.9rem; }
+.badge-green { background: #d1fae5; color: #059669; padding: 5px 10px; border-radius: 5px; font-weight: bold; }
+
+/* AEI */
+.ae-box { margin-top: 20px; background: #f8fafc; border-radius: 12px; padding: 15px; border-left: 5px solid var(--primary); }
+.aei-step { margin-bottom: 15px; line-height: 1.6; }
+.aei-badge { display: inline-block; width: 25px; height: 25px; border-radius: 50%; text-align: center; color: white; font-weight: 800; margin-right: 10px; }
+.aei-badge.a { background: var(--primary); }
+.aei-badge.e { background: var(--warning); }
+.aei-badge.i { background: var(--success); }
